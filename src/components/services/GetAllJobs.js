@@ -23,7 +23,7 @@ const checkAppliedJob = (job, userId) => {
 
 const handleUnbookmark = async (jobId, getJobs) => {
   try {
-    const accessToken = localStorage.getItem("token"); // You might need to adjust this based on how you store the access token
+
     // var userId = "default";
     // if (!accessToken) {
     //   // If the access token is not available, handle the authentication error
@@ -50,15 +50,11 @@ const handleUnbookmark = async (jobId, getJobs) => {
 
 const handleDeleteJob = async (jobId, getJobs) => {
   try {
-    const accessToken = localStorage.getItem("token");
     // if (!accessToken) {
     //   // If the access token is not available, handle the authentication error
     //   console.error("User not authenticated.");
     //   return;
     // }
-    const headers = {
-      Authorization: `${accessToken}`,
-    };
     const response = await axios.delete(`/jobs/${jobId}`);
     if (response.status === 200) {
       message.success(response.data.message);
@@ -73,14 +69,11 @@ const handleDeleteJob = async (jobId, getJobs) => {
 
 const handleApplyJob = async (jobId, getJobs) => {
   try {
-    const accessToken = localStorage.getItem("token");
     // if (!accessToken) {
     //   message.error("Not Authorized");
     //   return;
     // }
-    const headers = {
-      Authorization: `${accessToken}`,
-    };
+
     // var userId = "default";
     // const res = await axios.get(`/users/profile/${userId}`, {
     //   headers,
@@ -118,16 +111,13 @@ const handleApplyJob = async (jobId, getJobs) => {
 };
 const handleWithdrawJob = async (jobId, getJobs) => {
   try {
-    const accessToken = localStorage.getItem("token"); // You might need to adjust this based on how you store the access token
     // var userId = jwtDecode(localStorage.getItem("token")).userId;
     // if (!accessToken) {
     //   // If the access token is not available, handle the authentication error
     //   console.error("User not authenticated.");
     //   return;
     // }
-    const headers = {
-      Authorization: `${accessToken}`,
-    };
+
     // const response = await axios.post(`/jobs/withdraw/${jobId}`, null, {
     //   headers,
     // });
@@ -144,7 +134,6 @@ const handleWithdrawJob = async (jobId, getJobs) => {
 };
 const handleAddBookmark = async (jobId, getJobs) => {
   try {
-    const accessToken = localStorage.getItem("token");
     // if (!accessToken) {
     //   message.error("Not Authorized");
     //   return;

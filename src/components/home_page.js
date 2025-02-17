@@ -212,14 +212,13 @@ const HomePage = () => {
   const [jobTitle, setJobTitle] = useState("");
   const [filterLocation, setFilterLocation] = useState("");
   const [jobTime, setJobTime] = useState("Job Time");
-  const handleClick = () => {
-    setIsExpanded(!isExpanded);
-  };
+
   const handleJobTime = (option) => {
     setJobTime(option);
   };
   const fetchJobs = async () => {
     setJobs(demoJobs);
+    setIsExpanded(false);
     // try {
     //   const response = await axios.get("/jobs");
 

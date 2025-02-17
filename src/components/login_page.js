@@ -4,7 +4,6 @@ import { message } from "antd";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/login_page.css";
-import { useAuth } from "../utils/authContext";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -16,36 +15,12 @@ const LoginPage = () => {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
+
   const navigate = useNavigate();
-  // const dispatch = useDispatch()
-  const auth = useAuth();
-  const logOut = async () => {
-    try {
-      localStorage.removeItem("token");
-      window.location.href = "/";
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
   const changePassword = async () => {
     try {
-      const accessToken = localStorage.getItem("token");
-    //   if (!accessToken) {
-    //     message.error("User not authenticated.");
-    //     return;
-    //   }
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
-      const pws = {
-        currentPassword: password,
-        newPassword: newPassword,
-        reenterNewPassword: confirmPassword,
-      };
+
     //   const response = await axios.post("/auth/changePassword", pws, {
     //     headers,
     //   });
