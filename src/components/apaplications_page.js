@@ -145,16 +145,14 @@ const ApplicationPage = () => {
       ];
   const [activeTab, setActiveTab] = useState("applied");
   const [appliedJobs, setAppliedJobs] = useState(demoJobs);
-  const [applicants, setApplicants] = useState(applicantsJobs);
-  const [resolvedApplicants, setResolvedApplicants] = useState([]);
   const [createdJobs, setCreatedJobs] = useState(applicantsJobs);
-  const [logoUrl, setLogoUrl] = useState("");
-  const [jobs, setJobs] = useState(applicantsJobs);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
   const fetchJobs = async () => {
+    setAppliedJobs(demoJobs);
+    setCreatedJobs(applicantsJobs);
     // console.log("fetchJobs");
     // try {
     //   const response = await axios.get("/jobs");
@@ -194,12 +192,11 @@ const ApplicationPage = () => {
   };
 
   // Function to handle the delete job application action
-  const handleDeleteJobApplication = async (jobId) => {};
 
   const getCreatedJobs = async () => {
     try {
       // Get the access token from your authentication system
-      const accessToken = localStorage.getItem("token"); // You might need to adjust this based on how you store the access token
+
     //   const userId = jwtDecode(accessToken).userId;
     //   if (!accessToken) {
     //     // If the access token is not available, handle the authentication error
@@ -208,9 +205,7 @@ const ApplicationPage = () => {
     //   }
 
       // Set the Authorization header with the access token
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
+  
 
     //   const response = await axios.get(`/jobs/user/${userId}`, { headers });
     //   // Save the URL of the uploaded logo in the state
@@ -228,7 +223,7 @@ const ApplicationPage = () => {
   useEffect(() => {
     getAppliedJobs();
     fetchJobs();
-  }, []);
+  }, [fetchJobs, getAppliedJobs]);
   return (
     <div>
       <Navbar />
