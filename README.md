@@ -1,6 +1,6 @@
 # Job Finder UI - Website
 
-## [Live](https://ruchan10.github.io/job-finder-ui/)
+## [Live](https://ruchan10.github.io/SecurityCw2Frontend/)
 
 ## Table of Contents
 
@@ -52,13 +52,13 @@ Before setting up the project, ensure that you have the following installed:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/job-finder-ui.git
+   git clone https://github.com/ruchan10/SecurityCw2Frontend.git
    ```
 
 2. **Navigate to the project folder:**
 
    ```bash
-   cd job-finder-ui
+   cd SecurityCw2Frontend
    ```
 
 3. **Install dependencies:**
@@ -100,10 +100,6 @@ Contributions are welcome! If you'd like to contribute, please follow these step
 3. Commit your changes (`git commit -m 'Add new feature'`).
 4. Push the branch (`git push origin feature/your-feature`).
 5. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
 ---
 

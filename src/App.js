@@ -7,7 +7,6 @@ import ApplicationPage from "./components/apaplications_page";
 import HomePage from "./components/home_page";
 import { default as LoginPage } from "./components/login_page";
 import SignupPage from "./components/signup_page";
-import { AuthProvider } from "./utils/authContext";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -76,6 +75,7 @@ function App() {
               )
             }
           />
+        <Route path="*" element={<LoginPage />} />
         </Routes>
     </div>
   );

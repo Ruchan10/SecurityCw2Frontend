@@ -11,11 +11,7 @@ export default function AddJob() {
   const [salary, setSalary] = useState("");
   const [location, setLocation] = useState("");
   const [jobTime, setJobTime] = useState("Job Time");
-  const [createdJobs, setCreatedJobs] = useState([]);
   const [logo, setLogo] = useState(null);
-  const [logoUrl, setLogoUrl] = useState("");
-  const [imageUrls, setImageUrls] = useState([]);
-  const [jobs, setJobs] = useState([]);
 
   const handleJobTime = (option) => {
     setJobTime(option);
