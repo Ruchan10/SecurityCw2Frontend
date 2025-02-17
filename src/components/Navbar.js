@@ -2,7 +2,6 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 import { message } from "antd";
 import axios from "axios";
-import jwtDecode from "jwt-decode";
 import { React, useEffect, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { BsBookmark } from "react-icons/bs";
@@ -14,6 +13,13 @@ import { isAdmin } from "./global.js";
 import { GetAllUsers } from "./services/GetUserData";
 
 const Navbar = ({ onSearch }) => {
+    const demoNotifications = [
+        "Your application has been viewed.",
+        "A new job, matches your profile.",
+        "You have a new message.",
+        "A job has been updated."
+      ];
+      
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -30,7 +36,7 @@ const Navbar = ({ onSearch }) => {
 
   const [filterQuery, setFilterQuery] = useState("");
   const [jobs, setJobs] = useState([]);
-  const [notis, setNotis] = useState([]);
+  const [notis, setNotis] = useState(demoNotifications);
 
   const handleButtonClick = (path) => {
     setActiveButton(path);
@@ -54,55 +60,52 @@ const Navbar = ({ onSearch }) => {
   };
 
   const getUserProfile = async () => {
-    console.log("INSIDE GETuserprofile");
     try {
       const accessToken = localStorage.getItem("token");
-      const userId = jwtDecode(accessToken).userId;
+    //   const userId = jwtDecode(accessToken).userId;
 
-      if (!accessToken) {
-        // If the access token is not available, handle the authentication error
-        console.error("User not authenticated.");
-        return;
-      }
+    //   if (!accessToken) {
+    //     // If the access token is not available, handle the authentication error
+    //     console.error("User not authenticated.");
+    //     return;
+    //   }
       const headers = {
         Authorization: `${accessToken}`,
       };
-      const response = await axios.get(`/users/profile/${userId}`, {
-        headers,
-      });
+    //   const response = await axios.get(`/users/profile/${userId}`, {
+    //     headers,
+    //   });
 
-      if (response.status === 200) {
-        setProfileImage(response.data.data.profile);
-        setEmail(response.data.data.email);
-        console.log(response.data);
-      } else {
-        message.error(response.data.message);
-      }
+    //   if (response.status === 200) {
+        setProfileImage("https://tinyurl.com/b5hdyjkj");
+    //     setEmail(response.data.data.email);
+    //     console.log(response.data);
+    //   } else {
+    //     message.error(response.data.message);
+    //   }
     } catch (e) {
       console.error(e);
     }
   };
   const getNotifications = async () => {
     try {
-      const accessToken = localStorage.getItem("token");
-
-      if (!accessToken) {
-        // If the access token is not available, handle the authentication error
-        console.error("User not authenticated.");
-        return;
-      }
+      const accessToken = localStorage.getItem("token") ?? "default";
+    //   if (!accessToken) {
+    //     // If the access token is not available, handle the authentication error
+    //     console.error("User not authenticated.");
+    //     return;
+    //   }
       const headers = {
         Authorization: `${accessToken}`,
       };
-      console.log("In getNoti");
-      const response = await axios.get("/users/getNoti", {
-        headers,
-      });
-      if (response.status === 200) {
-        setNotis(response.data.data);
-      } else {
-        message.error(response.data.message);
-      }
+    //   const response = await axios.get("/users/getNoti", {
+    //     headers,
+    //   });
+    //   if (response.status === 200) {
+    //     setNotis(response.data.data);
+    //   } else {
+    //     message.error(response.data.message);
+    //   }
     } catch (e) {
       console.error(e);
     }
@@ -111,24 +114,23 @@ const Navbar = ({ onSearch }) => {
     try {
       const accessToken = localStorage.getItem("token");
 
-      if (!accessToken) {
-        // If the access token is not available, handle the authentication error
-        console.error("User not authenticated.");
-        return;
-      }
+    //   if (!accessToken) {
+    //     // If the access token is not available, handle the authentication error
+    //     console.error("User not authenticated.");
+    //     return;
+    //   }
       const headers = {
         Authorization: `${accessToken}`,
       };
-      console.log("In getNoti");
-      const response = await axios.post("/users/clearNoti", null, {
-        headers,
-      });
-      if (response.status === 200) {
-        console.log(response.data.message);
-        getNotifications();
-      } else {
-        message.error(response.data.message);
-      }
+    //   const response = await axios.post("/users/clearNoti", null, {
+    //     headers,
+    //   });
+    //   if (response.status === 200) {
+    //     console.log(response.data.message);
+    //     getNotifications();
+    //   } else {
+    //     message.error(response.data.message);
+    //   }
     } catch (e) {
       console.error(e);
     }
@@ -136,27 +138,27 @@ const Navbar = ({ onSearch }) => {
   const deleteAccount = async () => {
     try {
       const accessToken = localStorage.getItem("token");
-      if (!accessToken) {
-        // If the access token is not available, handle the authentication error
-        console.error("User not authenticated.");
-        return;
-      }
+    //   if (!accessToken) {
+    //     // If the access token is not available, handle the authentication error
+    //     console.error("User not authenticated.");
+    //     return;
+    //   }
       const headers = {
         Authorization: `${accessToken}`,
       };
-      const response = await axios.post(
-        `/users/profile/`,
-        { password },
-        {
-          headers,
-        }
-      );
-      if (response.status === 200) {
-        message.success(response.data.message);
-        navigate("/signup");
-      } else {
-        message.error(response.data.message);
-      }
+    //   const response = await axios.post(
+    //     `/users/profile/`,
+    //     { password },
+    //     {
+    //       headers,
+    //     }
+    //   );
+    //   if (response.status === 200) {
+    //     message.success(response.data.message);
+    //     navigate("/signup");
+    //   } else {
+    //     message.error(response.data.message);
+    //   }
     } catch (error) {
       console.error(error);
     }
@@ -173,10 +175,10 @@ const Navbar = ({ onSearch }) => {
   const changePassword = async () => {
     try {
       const accessToken = localStorage.getItem("token");
-      if (!accessToken) {
-        message.error("User not authenticated.");
-        return;
-      }
+    //   if (!accessToken) {
+    //     message.error("User not authenticated.");
+    //     return;
+    //   }
       const headers = {
         Authorization: `${accessToken}`,
       };
@@ -185,16 +187,16 @@ const Navbar = ({ onSearch }) => {
         newPassword: newPassword,
         reenterNewPassword: confirmPassword,
       };
-      const response = await axios.post("/auth/changePassword", pws, {
-        headers,
-      });
-      console.log(response.data);
-      if (response.data.success) {
-        message.success(response.data.message);
-        logOut();
-      } else {
-        message.error(response.data.message);
-      }
+    //   const response = await axios.post("/auth/changePassword", pws, {
+    //     headers,
+    //   });
+    //   console.log(response.data);
+    //   if (response.data.success) {
+    //     message.success(response.data.message);
+    //     logOut();
+    //   } else {
+    //     message.error(response.data.message);
+    //   }
     } catch (e) {
       console.error(e);
     }
@@ -202,10 +204,10 @@ const Navbar = ({ onSearch }) => {
   const changeEmail = async () => {
     try {
       const accessToken = localStorage.getItem("token");
-      if (!accessToken) {
-        message.error("User not authenticated.");
-        return;
-      }
+    //   if (!accessToken) {
+    //     message.error("User not authenticated.");
+    //     return;
+    //   }
       const headers = {
         Authorization: `${accessToken}`,
       };
@@ -213,16 +215,16 @@ const Navbar = ({ onSearch }) => {
         email: newEmail,
         confirmEmail: confirmEmail,
       };
-      const response = await axios.post("/users/changeEmail", emails, {
-        headers,
-      });
-      if (response.data.success) {
-        logOut();
+    //   const response = await axios.post("/users/changeEmail", emails, {
+    //     headers,
+    //   });
+    //   if (response.data.success) {
+    //     logOut();
 
-        message.success(response.data.message);
-      } else {
-        message.error(response.data.message);
-      }
+    //     message.success(response.data.message);
+    //   } else {
+    //     message.error(response.data.message);
+    //   }
     } catch (e) {
       console.error(e);
     }

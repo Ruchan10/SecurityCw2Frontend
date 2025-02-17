@@ -29,12 +29,16 @@
     "redux": "^4.2.1",
     "web-vitals": "^2.1.4"
   },
+  "homepage": "https://Ruchan10.github.io/SecurityCw2Frontend",
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "",
+    "start": "HTTPS=true SSL_CRT_FILE=./certs/cert.pem SSL_KEY_FILE=./certs/key.pem react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "coverage": "react-scripts test --coverage --watchAll=false"
+    "coverage": "react-scripts test --coverage --watchAll=false",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": [
@@ -61,11 +65,10 @@
     "@testing-library/jest-dom": "^5.17.0",
     "babel-jest": "^29.6.2",
     "daisyui": "^3.2.1",
+    "gh-pages": "^6.3.0",
     "msw": "^1.2.3",
     "tailwindcss": "^3.3.3",
     "tailwindcss-flip": "^1.0.0"
   },
   "proxy": "http://localhost:3000/"
-  
 }
-

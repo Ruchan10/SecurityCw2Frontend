@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import AddJob from "./components/AddJob";
 import BookmarkPage from "./components/Bookmark";
 import EditProfile from "./components/Edit_profile";
@@ -7,7 +7,6 @@ import ApplicationPage from "./components/apaplications_page";
 import HomePage from "./components/home_page";
 import { default as LoginPage } from "./components/login_page";
 import SignupPage from "./components/signup_page";
-import { RequireAuth } from "./utils/RequireAuth";
 import { AuthProvider } from "./utils/authContext";
 
 function App() {
@@ -24,7 +23,6 @@ function App() {
   }
   return (
     <div>
-      <AuthProvider>
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
@@ -34,9 +32,7 @@ function App() {
               authenticated ? (
                 <HomePage />
               ) : (
-                <RequireAuth>
                   <HomePage />
-                </RequireAuth>
               )
             }
           />
@@ -46,9 +42,7 @@ function App() {
               authenticated ? (
                 <ApplicationPage />
               ) : (
-                <RequireAuth>
                   <ApplicationPage />
-                </RequireAuth>
               )
             }
           />
@@ -58,9 +52,7 @@ function App() {
               authenticated ? (
                 <BookmarkPage />
               ) : (
-                <RequireAuth>
                   <BookmarkPage />
-                </RequireAuth>
               )
             }
           />
@@ -70,9 +62,7 @@ function App() {
               authenticated ? (
                 <AddJob />
               ) : (
-                <RequireAuth>
                   <AddJob />
-                </RequireAuth>
               )
             }
           />
@@ -82,14 +72,11 @@ function App() {
               authenticated ? (
                 <EditProfile />
               ) : (
-                <RequireAuth>
                   <EditProfile />
-                </RequireAuth>
               )
             }
           />
         </Routes>
-      </AuthProvider>
     </div>
   );
 }

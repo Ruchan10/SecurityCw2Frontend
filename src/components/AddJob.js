@@ -1,6 +1,4 @@
 import { message } from "antd";
-import axios from "axios";
-import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
@@ -25,12 +23,14 @@ export default function AddJob() {
   const navigate = useNavigate();
 
   const handleAddJob = async () => {
-    const accessToken = localStorage.getItem("token");
-    if (!accessToken) {
-      // If the access token is not available, handle the authentication error
-      console.error("User not authenticated.");
-      return;
-    }
+    const accessToken = localStorage.getItem("token") ?? "default";
+    console.log("TOKEN");
+    console.log(accessToken);
+    // if (!accessToken) {
+    //   // If the access token is not available, handle the authentication error
+    //   console.error("User not authenticated.");
+    //   return;
+    // }
 
     if (!name || !title || !desc || !salary) {
       message.error("Fields cannot be left empty");
@@ -52,18 +52,19 @@ export default function AddJob() {
       Authorization: `${accessToken}`,
       "Content-Type": "multipart/form-data",
     };
-
-    try {
-      const response = await axios.post("/jobs/", formData, { headers });
-      if (response.status === 201) {
-        navigate(-1);
-        message.success(response.data.message);
-      } else {
-        message.error(response.data.message);
-      }
-    } catch (error) {
-      message.error(error.message);
-    }
+    navigate(-1);
+    message.success("Job Added Successfully");
+    // try {
+    //   const response = await axios.post("/jobs/", formData, { headers });
+    //   if (response.status === 201) {
+    //     navigate(-1);
+    //     message.success(response.data.message);
+    //   } else {
+    //     message.error(response.data.message);
+    //   }
+    // } catch (error) {
+    //   message.error(error.message);
+    // }
   };
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -72,28 +73,26 @@ export default function AddJob() {
 
   const getCreatedJobs = async () => {
     try {
-      // Get the access token from your authentication system
-      const accessToken = localStorage.getItem("token"); // You might need to adjust this based on how you store the access token
-      const userId = jwtDecode(accessToken).userId;
-      if (!accessToken) {
-        // If the access token is not available, handle the authentication error
-        console.error("User not authenticated.");
-        return;
-      }
+      const accessToken = localStorage.getItem("token"); 
+    //   const userId = jwtDecode(accessToken).userId;
+    //   if (!accessToken) {
+    //     // If the access token is not available, handle the authentication error
+    //     console.error("User not authenticated.");
+    //     return;
+    //   }
 
       // Set the Authorization header with the access token
       const headers = {
         Authorization: `${accessToken}`,
       };
 
-      const response = await axios.get(`/jobs/user/${userId}`, { headers });
-      // Save the URL of the uploaded logo in the state
-      setLogoUrl(response.data.data[0].logo);
-      if (response.data.success) {
-        setCreatedJobs(response.data.data);
-      } else {
-        console.error(response.data.message);
-      }
+    //   const response = await axios.get(`/jobs/user/${userId}`, { headers });
+    //   setLogoUrl(response.data.data[0].logo);
+    //   if (response.data.success) {
+    //     setCreatedJobs(response.data.data);
+    //   } else {
+    //     console.error(response.data.message);
+    //   }
     } catch (error) {
       console.error(error);
     }

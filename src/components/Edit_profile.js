@@ -1,6 +1,4 @@
 import { message } from "antd";
-import axios from "axios";
-import jwtDecode from "jwt-decode";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/edit_profile.css";
@@ -12,48 +10,56 @@ export default function EditProfile() {
   const [email, setEmail] = useState("");
   const [num, setNum] = useState("");
   const [cvFile, setCvFile] = useState(null);
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef("");
   const [seeProfile, setAvatarImage] = useState(null);
   const [profile, setProfile] = useState(null);
 
+  const demoProfile = {
+    fullName: "John Doe",
+    email: "johndoe@example.com",
+    phoneNumber: "+1234567890",
+    avatar: "https://tinyurl.com/b5hdyjkj",
+    cv: "demo_cv.pdf", 
+  };
+  
   const navigate = useNavigate();
   const getUserProfile = async () => {
-    console.log("INSIDE GETuserprofile");
     try {
       const accessToken = localStorage.getItem("token"); // You might need to adjust this based on how you store the access token
-      const userId = jwtDecode(accessToken).userId;
+    //   const userId = jwtDecode(accessToken).userId;
 
-      if (!accessToken) {
-        // If the access token is not available, handle the authentication error
-        console.error("User not authenticated.");
-        return;
-      }
+    //   if (!accessToken) {
+    //     // If the access token is not available, handle the authentication error
+    //     console.error("User not authenticated.");
+    //     return;
+    //   }
       const headers = {
         Authorization: `${accessToken}`,
       };
-      const response = await axios.get(`/users/profile/${userId}`, {
-        headers,
-      });
-      console.log(response.data.data.cv);
-      if (response.status === 200) {
-        setAvatarImage(response.data.data.profile);
-        setFullName(response.data.data.fullName);
-        setNum(response.data.data.phoneNumber);
-        setCvFile(response.data.data.cv);
-      } else {
-        message.error(response.data.message);
-      }
+    //   const response = await axios.get(`/users/profile/${userId}`, {
+    //     headers,
+    //   });
+    //   console.log(response.data.data.cv);
+    //   if (response.status === 200) {
+        setFullName(demoProfile.fullName);
+        setEmail(demoProfile.email);
+        setNum(demoProfile.phoneNumber);
+        setAvatarImage(demoProfile.avatar);
+        setCvFile(demoProfile.cv);
+    //   } else {
+    //     message.error(response.data.message);
+    //   }
     } catch (e) {
       console.error(e);
     }
   };
   const handleEditProfile = async () => {
     const accessToken = localStorage.getItem("token");
-    if (!accessToken) {
-      // If the access token is not available, handle the authentication error
-      console.error("User not authenticated.");
-      return;
-    }
+    // if (!accessToken) {
+    //   // If the access token is not available, handle the authentication error
+    //   console.error("User not authenticated.");
+    //   return;
+    // }
 
     if (!fullName || !num) {
       message.error("Fields cannot be left empty");
@@ -66,24 +72,24 @@ export default function EditProfile() {
     formData.append("cv", cvFile);
     formData.append("profile", profile);
 
-    const headers = {
-      Authorization: `${accessToken}`,
-      "Content-Type": "multipart/form-data",
-    };
-    try {
-      const response = await axios.post("/users/editProfile", formData, {
-        headers,
-      });
-      console.log(response);
-      if (response.status === 200) {
-        navigate("/home");
-        message.success(response.data.message);
-      } else {
-        message.error(response.data.message);
-      }
-    } catch (error) {
-      message.error(error.message);
-    }
+    // const headers = {
+    //   Authorization: `${accessToken}`,
+    //   "Content-Type": "multipart/form-data",
+    // };
+    // try {
+    //   const response = await axios.post("/users/editProfile", formData, {
+    //     headers,
+    //   });
+    //   console.log(response);
+    //   if (response.status === 200) {
+    //     navigate("/home");
+    //     message.success(response.data.message);
+    //   } else {
+    //     message.error(response.data.message);
+    //   }
+    // } catch (error) {
+    //   message.error(error.message);
+    // }
   };
 
   const handleAvatarClick = () => {

@@ -3,7 +3,6 @@ import { useAuth } from "./authContext"
 
 export const RequireAuth = ({ children }) => {
     const auth = useAuth()
-    console.log(auth)
     if (!auth.email) {
         return <Navigate to={'/'} />
     }

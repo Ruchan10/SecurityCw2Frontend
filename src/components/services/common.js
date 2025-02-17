@@ -7,17 +7,6 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "../../styles/card.css";
 import "../../styles/signup_page.css";
 
-const onResSuccess = (response) => {
-  // Handle the response from Google Sign-In
-  console.log("Success");
-  console.log(response);
-};
-const onResFailure = (response) => {
-  // Handle the response from Google Sign-In
-  console.log("Failure");
-  console.log(response);
-};
-
 export function getIcons() {
   return (
     <div className="signup-social-logos">
@@ -40,100 +29,67 @@ export function getIcons() {
 export function GetUserPill({
   jobId,
   userId,
-  fullName,
-  num,
-  cv,
   title,
-  accept,
   applicants,
 }) {
-  const [applicant, setApplicant] = useState([]);
+  const [applicant, setApplicant] = useState({
+    fullName: "Jane Doe",
+    email: "janedoe@example.com",
+    phoneNumber: "+1234567890",
+    profile: "https://tinyurl.com/c4d4ze28", 
+    cv: "http://tiny.cc/w61a001" 
+  });
+
+  // Demo job and user data
+  const demoApplicants = [
+    {
+      jobId: 1,
+      userId: 1,
+      fullName: "John Doe",
+      email: "john.doe@example.com",
+      phoneNumber: "+1234567890",
+      profile: "https://tinyurl.com/3f6zyxyf",
+      cv: "http://tiny.cc/v61a001"
+    },
+    {
+      jobId: 1,
+      userId: 2,
+      fullName: "Jane Smith",
+      email: "jane.smith@example.com",
+      phoneNumber: "+0987654321",
+      profile: "https://tinyurl.com/2s3bch54",
+      cv: "http://tiny.cc/r61a001"
+    }
+  ];
 
   const getUserDetails = async (userId) => {
-    console.log("in getUserDetails");
-    setApplicant([]);
-
-    try {
-      if (!userId) {
-        return;
-      }
-      const response = await axios.get(`/auth/getUser/${userId}`);
-      setApplicant(response.data.data);
-    } catch (error) {
-      console.error(error);
-    }
+    const applicantData = demoApplicants.find(app => app.userId === userId);
+    setApplicant(applicantData || {});
   };
+
   const rejectUser = async (jobId, userId) => {
-    console.log("IN rejectUser");
-    try {
-      const response = await axios.post(
-        `/jobs/reject/${jobId}/${userId}`,
-        null
-      );
-      if (response.status === 200) {
-        message.success("User Rejected");
-      } else {
-        message.error("Unable to reject user");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    // Replace with actual reject API
+    console.log(`Rejecting user ${userId} for job ${jobId}`);
+    message.success("User Rejected");
   };
 
-  const handleAddNoti = async (jobTitle,userId) => {
-    console.log("in addNoti");
-    try {
-      const accessToken = localStorage.getItem("token");
-      if (!accessToken) {
-        message.error("Not Authorized");
-        return;
-      }
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
-      var noti = `You have been accepted for the job ${jobTitle}`;
-      const res = await axios.post(`/users/addNoti/${noti}/${userId}`, null, {
-        headers,
-      });
-      if (res.status === 200) {
-        console.log("Notification sent");
-      }
-    } catch (e) {
-      console.error(e);
-    }
+  const handleAddNoti = async (jobTitle, userId) => {
+    console.log(`Notification: ${userId} has been accepted for job ${jobTitle}`);
   };
+
   const acceptUser = async (jobId, userId, title) => {
-    try {
-      console.log("IN acceptUser");
-
-      const response = await axios.post(
-        `/jobs/acceptedUser/${jobId}/${userId}`
-      );
-      console.log(response);
-      if (response.status === 200) {
-        message.success(response.data.message);
-        handleAddNoti(title,userId);
-      } else {
-        message.error(response.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    console.log(`Accepting user ${userId} for job ${jobId}`);
+    message.success("User Accepted");
+    handleAddNoti(title, userId);
   };
-  const downloadCV = async () => {
-    console.log(applicant.cv);
-    try {
-      const response = await axios.get(`${applicant.cv}`, {
-        responseType: "blob",
-      });
-      console.log(response);
-      // Create a URL for the blob data
-      const url = window.URL.createObjectURL(new Blob([response.data]));
 
-      // Create a temporary anchor element to trigger the download
+  const downloadCV = async () => {
+    try {
+      const response = await axios.get(applicant.cv, { responseType: "blob" });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `${applicant.fullName}_cv.pdf`); // You can set the desired filename here
+      link.setAttribute("download", `${applicant.fullName}_cv.pdf`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -141,43 +97,33 @@ export function GetUserPill({
       console.error(error);
     }
   };
+
   useEffect(() => {
-    getUserDetails(userId);
-  }, []);
+    getUserDetails(userId); // Set demo user data when the component mounts
+  }, [userId]);
+
   if (!applicants.appliedJobs.includes(jobId)) {
-    return;
+    return null; // If the user hasn't applied to the job, don't render
   }
+
   return (
-    <div
-      class="spacer card w-96 bg-primary text-primary-content"
-      style={{ padding: 10 }}
-    >
+    <div className="spacer card w-96 bg-primary text-primary-content" style={{ padding: 10 }}>
       <div className="card-header">
-        <img src={applicants.profile} alt="Logo" className="logo" />
+        <img src={applicant.profile} alt="Profile" className="logo" />
         <h1 className="card-title">{title}</h1>
-        <div></div>
       </div>
-      <div class="card-body">
-        <h3 class="card-title" className="text-xl font">
-          {applicants.fullName}
-        </h3>
-        <h3 class="card-title" className="text-xl font">
-          {applicants.email}
-        </h3>
-        <h3 class="card-title" className="text-xl font">
-          {applicants.phoneNumber}
-        </h3>
-        <div class="card-actions justify-end">
-          <button onClick={() => rejectUser(jobId, userId)} class="btn btn-sm">
+      <div className="card-body">
+        <h3 className="card-title text-xl font">{applicant.fullName}</h3>
+        <h3 className="card-title text-xl font">{applicant.email}</h3>
+        <h3 className="card-title text-xl font">{applicant.phoneNumber}</h3>
+        <div className="card-actions justify-end">
+          <button onClick={() => rejectUser(jobId, applicant.userId)} className="btn btn-sm">
             <AiOutlineDelete />
           </button>
           <button className="btn btn-sm" onClick={() => downloadCV()}>
-            CV
+            Download CV
           </button>
-          <button
-            className="btn btn-sm"
-            onClick={() => acceptUser(jobId, userId, title)}
-          >
+          <button className="btn btn-sm" onClick={() => acceptUser(jobId, applicant.userId, title)}>
             Accept
           </button>
         </div>

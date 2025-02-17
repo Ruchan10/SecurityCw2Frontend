@@ -24,7 +24,6 @@ const SignupPage = () => {
   const checkOtp = async () => {
 
     try {
-      // Validate the OTP
       const response = await axios.post("/auth/verify-otp", { email, otp });
       if (response.status === 200) {
         message.success("Email verified! You can now login.");
@@ -43,32 +42,26 @@ const SignupPage = () => {
       errors.push("Fields cannot be left empty");
     }
 
-    // Check length
     if (password.length < 8) {
       errors.push("Password must be at least 8 characters long");
     }
 
-    // Check for uppercase letter
     if (!/[A-Z]/.test(password)) {
       errors.push("Password must contain at least one uppercase letter");
     }
 
-    // Check for lowercase letter
     if (!/[a-z]/.test(password)) {
       errors.push("Password must contain at least one lowercase letter");
     }
 
-    // Check for digit
     if (!/\d/.test(password)) {
       errors.push("Password must contain at least one digit");
     }
 
-    // Check for special character
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    if (!/[!@#$%^&*(),.-_?":{}|<>]/.test(password)) {
       errors.push("Password must contain a special character");
     }
 
-    // Check for personal information
     const lowerCasePassword = password.toLowerCase();
     const usernameFromEmail = email.split("@")[0];
     if (lowerCasePassword.includes(usernameFromEmail.toLowerCase())) {
@@ -81,8 +74,8 @@ const SignupPage = () => {
 
     return errors;
   };
+
   const handleSignup = async () => {
-    console.log("in signup page");
 
     const passwordErrors = validatePassword(password);
     if (passwordErrors.length > 0) {
@@ -94,22 +87,23 @@ const SignupPage = () => {
       email: email,
       password: password,
     };
-    window.otpModal.showModal();
 
-    try {
-      //   dispatch(ShowLoading());
-      const response = await axios.post("/auth/signup", user);
-      //   dispatch(ShowLoading())
-      console.log(response);
-      if (response.status === 201) {
-        message.success(response.data.message);
+    message.success('Account created successfully');
         navigate("/");
-      } else {
-        message.error(response.data.error);
-      }
-    } catch (error) {
-      message.error("No response from server");
-    }
+
+    // window.otpModal.showModal();
+
+    // try {
+    //   const response = await axios.post("/auth/signup", user);
+    //   if (response.status === 201) {
+    //     message.success(response.data.message);
+    //     navigate("/");
+    //   } else {
+    //     message.error(response.data.error);
+    //   }
+    // } catch (error) {
+    //   message.error("No response from server");
+    // }
   };
 
   return (

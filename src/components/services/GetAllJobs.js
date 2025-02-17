@@ -3,7 +3,6 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 import { Card, Modal, message } from "antd";
 import axios from "axios";
-import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import "../../styles/home_page.css";
 import "../../tailwind.css";
@@ -25,25 +24,24 @@ const checkAppliedJob = (job, userId) => {
 const handleUnbookmark = async (jobId, getJobs) => {
   try {
     const accessToken = localStorage.getItem("token"); // You might need to adjust this based on how you store the access token
-    var userId = jwtDecode(localStorage.getItem("token")).userId;
-    console.log(userId);
-    if (!accessToken) {
-      // If the access token is not available, handle the authentication error
-      console.error("User not authenticated.");
-      return;
-    }
-    const headers = {
-      Authorization: `${accessToken}`,
-    };
-    const response = await axios.delete(`/jobs/removeBookmark/${jobId}`, {
-      headers,
-    });
-    console.log(response);
-    if (response.status === 200) {
-      message.success(response.data.message);
-    } else {
-      message.error(response.data.message);
-    }
+    // var userId = "default";
+    // if (!accessToken) {
+    //   // If the access token is not available, handle the authentication error
+    //   console.error("User not authenticated.");
+    //   return;
+    // }
+    // const headers = {
+    //   Authorization: `${accessToken}`,
+    // };
+    // const response = await axios.delete(`/jobs/removeBookmark/${jobId}`, {
+    //   headers,
+    // });
+    // console.log(response);
+    // if (response.status === 200) {
+    //   message.success(response.data.message);
+    // } else {
+    //   message.error(response.data.message);
+    // }
   } catch (error) {
     console.error(error);
   }
@@ -52,14 +50,12 @@ const handleUnbookmark = async (jobId, getJobs) => {
 
 const handleDeleteJob = async (jobId, getJobs) => {
   try {
-    console.log("In DELETE JOB");
-    console.log(jobId);
     const accessToken = localStorage.getItem("token");
-    if (!accessToken) {
-      // If the access token is not available, handle the authentication error
-      console.error("User not authenticated.");
-      return;
-    }
+    // if (!accessToken) {
+    //   // If the access token is not available, handle the authentication error
+    //   console.error("User not authenticated.");
+    //   return;
+    // }
     const headers = {
       Authorization: `${accessToken}`,
     };
@@ -78,43 +74,43 @@ const handleDeleteJob = async (jobId, getJobs) => {
 const handleApplyJob = async (jobId, getJobs) => {
   try {
     const accessToken = localStorage.getItem("token");
-    if (!accessToken) {
-      message.error("Not Authorized");
-      return;
-    }
+    // if (!accessToken) {
+    //   message.error("Not Authorized");
+    //   return;
+    // }
     const headers = {
       Authorization: `${accessToken}`,
     };
-    var userId = jwtDecode(localStorage.getItem("token")).userId;
-    const res = await axios.get(`/users/profile/${userId}`, {
-      headers,
-    });
-    if (res.status === 200) {
-      console.log("handleApplyJob");
-      console.log(res.data.data.cv);
-      if (
-        res.data.data.cv == null ||
-        res.data.data.profile == null ||
-        res.data.data.fullName == null ||
-        res.data.data.phoneNumber == null
-      ) {
-        message.error("First fill in your profile");
-        return;
-      }
-    } else {
-      message.error(res.data.message);
-      return;
-    }
+    // var userId = "default";
+    // const res = await axios.get(`/users/profile/${userId}`, {
+    //   headers,
+    // });
+    // if (res.status === 200) {
+    //   console.log("handleApplyJob");
+    //   console.log(res.data.data.cv);
+    //   if (
+    //     res.data.data.cv == null ||
+    //     res.data.data.profile == null ||
+    //     res.data.data.fullName == null ||
+    //     res.data.data.phoneNumber == null
+    //   ) {
+    //     message.error("First fill in your profile");
+    //     return;
+    //   }
+    // } else {
+    //   message.error(res.data.message);
+    //   return;
+    // }
 
-    const response = await axios.post(`/jobs/applyJob/${jobId}`, null, {
-      headers,
-    });
+    // const response = await axios.post(`/jobs/applyJob/${jobId}`, null, {
+    //   headers,
+    // });
 
-    if (response.status === 200) {
-      message.success(response.data.message);
-    } else {
-      message.error(response.data.message);
-    }
+    // if (response.status === 200) {
+    //   message.success(response.data.message);
+    // } else {
+    //   message.error(response.data.message);
+    // }
   } catch (error) {
     console.error(error);
   }
@@ -123,25 +119,24 @@ const handleApplyJob = async (jobId, getJobs) => {
 const handleWithdrawJob = async (jobId, getJobs) => {
   try {
     const accessToken = localStorage.getItem("token"); // You might need to adjust this based on how you store the access token
-    var userId = jwtDecode(localStorage.getItem("token")).userId;
-    console.log(userId);
-    if (!accessToken) {
-      // If the access token is not available, handle the authentication error
-      console.error("User not authenticated.");
-      return;
-    }
+    // var userId = jwtDecode(localStorage.getItem("token")).userId;
+    // if (!accessToken) {
+    //   // If the access token is not available, handle the authentication error
+    //   console.error("User not authenticated.");
+    //   return;
+    // }
     const headers = {
       Authorization: `${accessToken}`,
     };
-    const response = await axios.post(`/jobs/withdraw/${jobId}`, null, {
-      headers,
-    });
-    console.log(response);
-    if (response.status === 200) {
-      message.success(response.data.message);
-    } else {
-      message.error(response.data.message);
-    }
+    // const response = await axios.post(`/jobs/withdraw/${jobId}`, null, {
+    //   headers,
+    // });
+    // console.log(response);
+    // if (response.status === 200) {
+    //   message.success(response.data.message);
+    // } else {
+    //   message.error(response.data.message);
+    // }
   } catch (error) {
     console.error(error);
   }
@@ -150,24 +145,24 @@ const handleWithdrawJob = async (jobId, getJobs) => {
 const handleAddBookmark = async (jobId, getJobs) => {
   try {
     const accessToken = localStorage.getItem("token");
-    if (!accessToken) {
-      message.error("Not Authorized");
-      return;
-    }
-    const headers = {
-      Authorization: `${accessToken}`,
-    };
-    const response = await axios.post(`/jobs/addBookmark/${jobId}`, null, {
-      headers,
-    });
-    console.log(`/jobs/addBookmark/${jobId}`);
+    // if (!accessToken) {
+    //   message.error("Not Authorized");
+    //   return;
+    // }
+    // const headers = {
+    //   Authorization: `${accessToken}`,
+    // };
+    // const response = await axios.post(`/jobs/addBookmark/${jobId}`, null, {
+    //   headers,
+    // });
+    // console.log(`/jobs/addBookmark/${jobId}`);
 
-    console.log(response);
-    if (response.status === 200) {
-      message.success(response.data.message);
-    } else {
-      message.error(response.data.message);
-    }
+    // console.log(response);
+    // if (response.status === 200) {
+    //   message.success(response.data.message);
+    // } else {
+    //   message.error(response.data.message);
+    // }
   } catch (error) {
     console.error(error);
   }
@@ -175,9 +170,9 @@ const handleAddBookmark = async (jobId, getJobs) => {
 };
 
 export const GetAllJobs = ({ jobsData, getJobs }) => {
-  useEffect(() => {
-    getJobs();
-  }, []);
+//   useEffect(() => {
+//     getJobs();
+//   }, []);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   // Function to show the modal and store the selected job
@@ -201,11 +196,11 @@ export const GetAllJobs = ({ jobsData, getJobs }) => {
             time: job.jobTime,
             applied: checkAppliedJob(
               job,
-              jwtDecode(localStorage.getItem("token")).userId
+              "default"
             ),
             bookmarked: checkUserBookmark(
               job,
-              jwtDecode(localStorage.getItem("token")).userId
+              "default"
             ),
             onUnbookmark: () => handleUnbookmark(job._id, getJobs),
             addBookmark: () => handleAddBookmark(job._id, getJobs),
@@ -297,11 +292,11 @@ export const GetBookmarked = ({ bookmarkData, getBookmarks }) => {
             time: job.jobTime,
             applied: checkAppliedJob(
               job,
-              jwtDecode(localStorage.getItem("token")).userId
+              "default"
             ),
             bookmarked: checkUserBookmark(
               job,
-              jwtDecode(localStorage.getItem("token")).userId
+              "default"
             ),
             onUnbookmark: () => handleUnbookmark(job._id, getBookmarks),
             apply: () => handleShowModal(job),
@@ -386,11 +381,11 @@ export const GetAppliedJobs = ({
             addBookmark: () => handleAddBookmark(job._id, getJobs),
             bookmarked: checkUserBookmark(
               job,
-              jwtDecode(localStorage.getItem("token")).userId
+              "default"
             ),
             applied: checkAppliedJob(
               job,
-              jwtDecode(localStorage.getItem("token")).userId
+              "default"
             ),
             onUnbookmark: () => handleUnbookmark(job._id, getJobs),
             withdraw: () => handleWithdrawJob(job._id, getJobs),

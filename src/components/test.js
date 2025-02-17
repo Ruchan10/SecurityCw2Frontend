@@ -1,108 +1,191 @@
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
 import { message } from "antd";
-import axios from "axios";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "../styles/login_page.css";
-import { useAuth } from "../utils/authContext";
-import { setAdmin } from "./global.js";
+import { AiOutlineHome } from "react-icons/ai";
+import { BsBookmark } from "react-icons/bs";
+import { IoBriefcaseOutline, IoDocumentsOutline } from "react-icons/io5";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "../styles/Navbar.css";
+import "../tailwind.css";
 
-const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
+const Navbar = ({ onSearch }) => {
   const navigate = useNavigate();
-  // const dispatch = useDispatch()
-  const auth = useAuth();
+  const location = useLocation();
+  const [activeButton, setActiveButton] = useState(location.pathname);
+  const [profileImage, setProfileImage] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [notis, setNotis] = useState([]);  // notifications state
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleButtonClick = (path) => {
+    setActiveButton(path);
+  };
 
-    try {
-      const user = {
-        email: email,
-        password: password,
-      };
-      console.log(user);
+  const isButtonActive = (path) => {
+    return activeButton === path;
+  };
 
-      auth.setEmail(user.email);
-      setAdmin(email);
-      const response = await axios.post("/auth/login", user);
-      console.log(response);
-      if (response.data.success) {
-        message.success(response.data.message);
-        localStorage.setItem("token", response.data.token);
-        navigate("/home");
-      } else {
-        message.error(response.data.error);
-      }
-    } catch (error) {
-      message.error("No response from server");
+  // Demo notifications
+  const demoNotifications = [
+    "Your job application has been reviewed.",
+    "New job posted that matches your profile.",
+    "You have a new message from an employer.",
+    "A job you bookmarked has been updated."
+  ];
+
+  const renderNotifications = () => {
+    if (notis.length === 0) {
+      return (
+        <li>
+          <a>No notifications</a>
+        </li>
+      );
+    } else {
+      return notis.map((notification, index) => (
+        <li key={index}>
+          <a>{notification}</a>
+        </li>
+      ));
     }
   };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  useEffect(() => {
+    // Adding demo notifications to the state
+    setNotis(demoNotifications);
+  }, []);
+
   return (
-    <div className="login-page dir=rtl">
-      <div className="text-4xl font-bold">Hi!</div>
-
-      <div className="text-4xl font">Welcome Back</div>
-      <hr className="gap"></hr>
-      <h4 className="text-4xl font-bold">Log In</h4>
-      <hr className="gap"></hr>
-
-      <div className="login-form">
-        <input
-          type="text"
-          placeholder="Email"
-          className="input input-primary input-bordered w-full "
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <div className="password-input-container">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            className="input input-primary input-bordered w-full password-input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></input>
-          <button
-            className={`password-toggle-button ${
-              showPassword ? "visible" : ""
+    <div>
+      <div className={`navbar bg-neutral ${menuOpen ? "menu-open" : ""}`}>
+        <div className="navbar-start">
+          <div className="menu-dropdown" onClick={toggleMenu}>
+            <div className="dropdown-icon"></div>
+            {menuOpen && (
+              <div className="dropdown-content">
+                <Link to="/home" onClick={() => handleButtonClick("/home")}>
+                  Home
+                </Link>
+              </div>
+            )}
+          </div>
+          <div
+            className={`tabs-boxed bg-neutral ${
+              menuOpen ? "menu-open" : "menu-closed"
             }`}
-            onClick={toggleShowPassword}
-            data-testid="password-toggle-button"
           >
-            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-          </button>
+            <Link to="/home">
+              <div
+                className={`tab ${isButtonActive("/home") ? "tab-active" : ""}`}
+                onClick={() => handleButtonClick("/home")}
+              >
+                <AiOutlineHome className="tab-icon" />
+                <span>Home</span>
+              </div>
+            </Link>
+            <Link to="/bookmark">
+              <div
+                className={`tab ${
+                  isButtonActive("/bookmark") ? "tab-active" : ""
+                }`}
+                onClick={() => handleButtonClick("/bookmark")}
+              >
+                <BsBookmark className="tab-icon" />
+                <span>Bookmark</span>
+              </div>
+            </Link>
+            <Link to="/application">
+              <div
+                className={`tab ${
+                  isButtonActive("/application") ? "tab-active" : ""
+                }`}
+                onClick={() => handleButtonClick("/application")}
+              >
+                <IoDocumentsOutline className="tab-icon" />
+                <span>Applications</span>
+              </div>
+            </Link>
+            <Link to="/addjob">
+              <div
+                className={`tab ${
+                  isButtonActive("/addjob") ? "tab-active" : ""
+                }`}
+                onClick={() => handleButtonClick("/addjob")}
+              >
+                <IoBriefcaseOutline className="tab-icon" />
+                <span> Add Job</span>
+              </div>
+            </Link>
+          </div>
         </div>
-        <button
-          className="btn btn-primary h-10 w-60 rounded-full btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-          onClick={handleSubmit}
-        >
-          Log In
-        </button>
+        <div className="navbar-center">
+          <div className="text-3xl font-bold">The Job Finder</div>
+        </div>
+        <div className="navbar-end">
+          <div className="form-control">
+            <input
+              type="text"
+              placeholder="Search"
+              className="input input-bordered w-24 md:w-auto"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <button
+            data-testid="searchBtn"
+            className="btn btn-ghost"
+            onClick={() => {}}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </button>
+          <div className="dropdown dropdown-end">
+            <button className="btn btn-ghost btn-circle" onClick={toggleMenu}>
+              <div className="indicator">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  />
+                </svg>
+                <span className="badge badge-xs badge-primary indicator-item"></span>
+              </div>
+            </button>
+            <ul
+              tabindex="0"
+              className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+            >
+              {/* Render notifications */}
+              {renderNotifications()}
+            </ul>
+          </div>
+        </div>
       </div>
-      <div className=" divider-vertical">OR</div>
-
-      {/* {getIcons()} */}
-
-      <p className="signup-login-link">
-        Don't have an account?{" "}
-        <Link to={"/signup"}>
-          <a href="/signup">Sign Up</a>
-        </Link>
-      </p>
+      <div className="spacer"></div>
     </div>
   );
 };
 
-export default LoginPage;
+export default Navbar;

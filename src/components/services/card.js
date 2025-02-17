@@ -72,7 +72,6 @@ export const getCard = ({
           <h3 className="font-bold text-lg">Delete Job !!!</h3>
           <p className="py-4">Are you sure you want to delete?</p>
           <div className="modal-action">
-            {/* if there is a button in form, it will close the modal */}
             <button className="btn">No</button>
             <button className="btn" onClick={deleteJob}>
               Yes

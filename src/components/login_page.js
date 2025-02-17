@@ -1,12 +1,10 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { message } from "antd";
-import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/login_page.css";
 import { useAuth } from "../utils/authContext";
-import { setAdmin } from "./global.js";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -36,10 +34,10 @@ const LoginPage = () => {
   const changePassword = async () => {
     try {
       const accessToken = localStorage.getItem("token");
-      if (!accessToken) {
-        message.error("User not authenticated.");
-        return;
-      }
+    //   if (!accessToken) {
+    //     message.error("User not authenticated.");
+    //     return;
+    //   }
       const headers = {
         Authorization: `${accessToken}`,
       };
@@ -48,16 +46,15 @@ const LoginPage = () => {
         newPassword: newPassword,
         reenterNewPassword: confirmPassword,
       };
-      const response = await axios.post("/auth/changePassword", pws, {
-        headers,
-      });
-      console.log(response.data);
-      if (response.data.success) {
-        message.success(response.data.message);
-        logOut();
-      } else {
-        message.error(response.data.message);
-      }
+    //   const response = await axios.post("/auth/changePassword", pws, {
+    //     headers,
+    //   });
+    //   if (response.data.success) {
+    //     message.success(response.data.message);
+    //     logOut();
+    //   } else {
+    //     message.error(response.data.message);
+    //   }
     } catch (e) {
       console.error(e);
     }
@@ -65,43 +62,38 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = {
-        email: email,
-        password: password,
-      };
+        if (!email || !password ) {
+            message.error("Fields cannot be left empty");
+          }
 
-      console.log(user);
+    //   const user = {
+    //     email: email,
+    //     password: password,
+    //   };
 
-      auth.setEmail(user.email);
 
-      setAdmin(email);
-      console.log("IN LOGIN.....");
+    //   auth.setEmail(user.email);
 
-      const response = await axios.post("/auth/login", user);
-      console.log("RESPONSE");
+    //   setAdmin(email);
+      navigate("/home");
 
-      console.log(response);
+    //   const response = await axios.post("/auth/login", user);
 
-      if (response.data.success) {
-        message.success(response.data.message);
+    //   if (response.data.success) {
+    //     message.success(response.data.message);
 
-        // Check if password change is required
-        const passwordChangeInterval = 90 * 24 * 60 * 60 * 1000; // 90 days in milliseconds
-        const lastPasswordChange = response.data.user.lastPasswordChange;
+    //     const passwordChangeInterval = 90 * 24 * 60 * 60 * 1000; // 90 days in milliseconds
+    //     const lastPasswordChange = response.data.user.lastPasswordChange;
 
-        if (lastPasswordChange < Date.now() - passwordChangeInterval) {
-          // Redirect to change password page
-          window.login_modal.showModal();
-        } else {
-          // Set authentication token and navigate to home
-          localStorage.setItem("token", response.data.token);
-          navigate("/home");
-        }
-      } else {
-        console.log("IN LOGIN");
+    //     if (lastPasswordChange < Date.now() - passwordChangeInterval) {
+    //       window.login_modal.showModal();
+    //     } else {
+    //       localStorage.setItem("token", response.data.token);
+    //     }
+    //   } else {
 
-        message.error(response.data.error);
-      }
+    //     message.error(response.data.error);
+    //   }
     } catch (error) {
       message.error("No response from server");
     }
@@ -139,7 +131,7 @@ const LoginPage = () => {
             onClick={toggleShowPassword}
             data-testid="password-toggle-button"
           >
-            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye } />
           </button>
         </div>
         <button

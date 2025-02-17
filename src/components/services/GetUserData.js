@@ -8,41 +8,59 @@ const getCv = async () => {};
 const acceptUser = async () => {};
 
 export function GetUserData({ jobId, jobName }) {
-  const [applicants, setApplicants] = useState([]); // State to store the applicants
+  const [applicants, setApplicants] = useState(demoApplicants); // State to store the applicants
+  const demoApplicants = [
+    {
+      userId: "1",
+      applicant: {
+        fullName: "John Doe",
+        email: "john@example.com",
+        phoneNumber: "123-456-7890",
+        cv: "/path/to/john_cv.pdf",
+      },
+    },
+    {
+      userId: "2",
+      applicant: {
+        fullName: "Jane Smith",
+        email: "jane@example.com",
+        phoneNumber: "987-654-3210",
+        cv: "/path/to/jane_cv.pdf",
+      },
+    },
+  ];
   var userResponse = useState([]);
   const getJobsById = async (jobId) => {
     setApplicants([]);
-    console.log("GETUSERDATA");
-    console.log(applicants);
 
-    try {
-      const response = await axios.get(`/jobs/id/${jobId}`);
-      if (response.status === 200) {
-        const userIds = response.data.appliedBy;
-        const updatedApplicants = [];
+    // try {
+    //   const response = await axios.get(`/jobs/id/${jobId}`);
+    //   if (response.status === 200) {
+    //     const userIds = response.data.appliedBy;
+    //     const updatedApplicants = [];
 
-        for (const userId of userIds) {
-          try {
-            userResponse = await axios.get(`/auth/getUser/${userId}`);
-            if (userResponse.status === 200) {
-              updatedApplicants.push({
-                userId,
-                applicant: userResponse.data.data,
-              });
-            } else {
-              console.error(userResponse.data.message);
-            }
-          } catch (error) {
-            console.error(error);
-          }
-        }
-        setApplicants(updatedApplicants);
-      } else {
-        console.error(response.data.message);
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    //     for (const userId of userIds) {
+    //       try {
+    //         userResponse = await axios.get(`/auth/getUser/${userId}`);
+    //         if (userResponse.status === 200) {
+    //           updatedApplicants.push({
+    //             userId,
+    //             applicant: userResponse.data.data,
+    //           });
+    //         } else {
+    //           console.error(userResponse.data.message);
+    //         }
+    //       } catch (error) {
+    //         console.error(error);
+    //       }
+    //     }
+    //     setApplicants(updatedApplicants);
+    //   } else {
+    //     console.error(response.data.message);
+    //   }
+    // } catch (e) {
+    //   console.error(e);
+    // }
     window.display_users.showModal();
   };
   return (
@@ -89,42 +107,62 @@ export function GetAllUsers() {
   const [users, setUsers] = useState([]); // State to store the applicants
   const [selectedUser, setSelectedUser] = useState([]);
   const downloadCV = async () => {
-    try {
-      console.log(selectedUser);
-      const response = await axios.get(`${selectedUser.cv}`, {
-        responseType: "blob",
-      });
-      console.log(response);
-      // Create a URL for the blob data
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+    // try {
+    //   console.log(selectedUser);
+    //   const response = await axios.get(`${selectedUser.cv}`, {
+    //     responseType: "blob",
+    //   });
+    //   console.log(response);
+    //   // Create a URL for the blob data
+    //   const url = window.URL.createObjectURL(new Blob([response.data]));
 
-      // Create a temporary anchor element to trigger the download
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `${selectedUser.fullName}_cv.pdf`); // You can set the desired filename here
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error(error);
-    }
+    //   // Create a temporary anchor element to trigger the download
+    //   const link = document.createElement("a");
+    //   link.href = url;
+    //   link.setAttribute("download", `${selectedUser.fullName}_cv.pdf`); // You can set the desired filename here
+    //   document.body.appendChild(link);
+    //   link.click();
+    //   document.body.removeChild(link);
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
+  const demoApplicants = [
+    {
+      userId: "1",
+      applicant: {
+        fullName: "John Doe",
+        email: "john@example.com",
+        phoneNumber: "123-456-7890",
+        cv: "/path/to/john_cv.pdf",
+      },
+    },
+    {
+      userId: "2",
+      applicant: {
+        fullName: "Jane Smith",
+        email: "jane@example.com",
+        phoneNumber: "987-654-3210",
+        cv: "/path/to/jane_cv.pdf",
+      },
+    },
+  ];
   const getUsers = async () => {
-    try {
-      const accessToken = localStorage.getItem("token");
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
-      const response = await axios.get("/users", { headers });
-      if (response.status === 200) {
-        const userIds = response.data.data;
-        setUsers(userIds);
-      } else {
-        console.error(response.data.message);
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    // try {
+    //   const accessToken = localStorage.getItem("token");
+    //   const headers = {
+    //     Authorization: `${accessToken}`,
+    //   };
+    //   const response = await axios.get("/users", { headers });
+    //   if (response.status === 200) {
+    //     const userIds = response.data.data;
+        setUsers(demoApplicants);
+    //   } else {
+    //     console.error(response.data.message);
+    //   }
+    // } catch (e) {
+    //   console.error(e);
+    // }
   };
   useEffect(() => {
     getUsers();
