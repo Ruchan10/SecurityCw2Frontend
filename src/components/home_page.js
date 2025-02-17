@@ -254,7 +254,7 @@ const HomePage = () => {
 
   useEffect(() => {
     fetchJobs();
-  }, []);
+  }, [fetchJobs]);
   const handleSearch = (searchResults) => {
     setJobs(searchResults);
   };

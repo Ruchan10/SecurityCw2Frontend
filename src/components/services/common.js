@@ -1,6 +1,6 @@
 import { message } from "antd";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsApple, BsFacebook, BsGoogle } from "react-icons/bs";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
@@ -32,7 +32,7 @@ export function GetUserPill({
   title,
   applicants,
 }) {
-  const [applicant, setApplicant] = useState({
+  const [applicant] = useState({
     fullName: "Jane Doe",
     email: "janedoe@example.com",
     phoneNumber: "+1234567890",
@@ -40,32 +40,12 @@ export function GetUserPill({
     cv: "http://tiny.cc/w61a001" 
   });
 
-  // Demo job and user data
-  const demoApplicants = [
-    {
-      jobId: 1,
-      userId: 1,
-      fullName: "John Doe",
-      email: "john.doe@example.com",
-      phoneNumber: "+1234567890",
-      profile: "https://tinyurl.com/3f6zyxyf",
-      cv: "http://tiny.cc/v61a001"
-    },
-    {
-      jobId: 1,
-      userId: 2,
-      fullName: "Jane Smith",
-      email: "jane.smith@example.com",
-      phoneNumber: "+0987654321",
-      profile: "https://tinyurl.com/2s3bch54",
-      cv: "http://tiny.cc/r61a001"
-    }
-  ];
 
-  const getUserDetails = async (userId) => {
-    const applicantData = demoApplicants.find(app => app.userId === userId);
-    setApplicant(applicantData || {});
-  };
+
+//   const getUserDetails = async (userId) => {
+//     const applicantData = demoApplicants.find(app => app.userId === userId);
+//     setApplicant(applicantData || {});
+//   };
 
   const rejectUser = async (jobId, userId) => {
     // Replace with actual reject API
@@ -98,9 +78,9 @@ export function GetUserPill({
     }
   };
 
-  useEffect(() => {
-    getUserDetails(userId); // Set demo user data when the component mounts
-  }, [userId]);
+//   useEffect(() => {
+//     getUserDetails(userId); // Set demo user data when the component mounts
+//   }, [getUserDetails, userId]);
 
   if (!applicants.appliedJobs.includes(jobId)) {
     return null; // If the user hasn't applied to the job, don't render

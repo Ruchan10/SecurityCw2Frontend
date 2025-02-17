@@ -137,7 +137,7 @@ export default function BookmarkPage() {
 
   useEffect(() => {
     getBookmarks();
-  }, []);
+  }, [getBookmarks]);
 
   return (
     <div>

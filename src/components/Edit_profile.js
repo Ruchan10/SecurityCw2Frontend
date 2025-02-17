@@ -114,7 +114,7 @@ export default function EditProfile() {
   };
   useEffect(() => {
     getUserProfile();
-  }, []);
+  }, [getUserProfile]);
   return (
     <div>
       <Navbar />

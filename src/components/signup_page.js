@@ -83,14 +83,14 @@ const SignupPage = () => {
       return;
     }
 
-    const user = {
-      email: email,
-      password: password,
-    };
+    // const user = {
+    //   email: email,
+    //   password: password,
+    // };
 
     message.success('Account created successfully');
         navigate("/");
-
+setotp('000');
     // window.otpModal.showModal();
 
     // try {

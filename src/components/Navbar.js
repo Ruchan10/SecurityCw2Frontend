@@ -234,13 +234,13 @@ const Navbar = ({ onSearch }) => {
     if (notis.length === 0) {
       return (
         <li>
-          <a>Empty</a>
+          <a href="#">Empty</a>
         </li>
       );
     } else {
       return notis.map((notification, index) => (
         <li key={index}>
-          <a>{notification}</a>
+          <a href="#">{notification}</a>
         </li>
       ));
     }
@@ -252,7 +252,7 @@ const Navbar = ({ onSearch }) => {
   useEffect(() => {
     getUserProfile();
     getNotifications();
-  }, []);
+  }, [getUserProfile]);
   return (
     <div>
       <div className={`navbar bg-neutral ${menuOpen ? "menu-open" : ""}`}>

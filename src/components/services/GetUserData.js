@@ -1,6 +1,6 @@
 import { message } from "antd";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineDelete, AiOutlineDownload } from "react-icons/ai";
 import { GetUserPill } from "./common";
 
@@ -8,7 +8,6 @@ const getCv = async () => {};
 const acceptUser = async () => {};
 
 export function GetUserData({ jobId, jobName }) {
-  const [applicants, setApplicants] = useState(demoApplicants); // State to store the applicants
   const demoApplicants = [
     {
       userId: "1",
@@ -29,7 +28,8 @@ export function GetUserData({ jobId, jobName }) {
       },
     },
   ];
-  var userResponse = useState([]);
+  const [applicants, setApplicants] = useState(demoApplicants); 
+
   const getJobsById = async (jobId) => {
     setApplicants([]);
 
@@ -104,9 +104,31 @@ const deleteUser = async (userId) => {
   }
 };
 export function GetAllUsers() {
+    const demoApplicants = [
+        {
+          userId: "1",
+          applicant: {
+            fullName: "John Doe",
+            email: "john@example.com",
+            phoneNumber: "123-456-7890",
+            cv: "/path/to/john_cv.pdf",
+          },
+        },
+        {
+          userId: "2",
+          applicant: {
+            fullName: "Jane Smith",
+            email: "jane@example.com",
+            phoneNumber: "987-654-3210",
+            cv: "/path/to/jane_cv.pdf",
+          },
+        },
+      ];
   const [users, setUsers] = useState([]); // State to store the applicants
   const [selectedUser, setSelectedUser] = useState([]);
   const downloadCV = async () => {
+    setUsers(demoApplicants);
+
     // try {
     //   console.log(selectedUser);
     //   const response = await axios.get(`${selectedUser.cv}`, {
@@ -127,46 +149,7 @@ export function GetAllUsers() {
     //   console.error(error);
     // }
   };
-  const demoApplicants = [
-    {
-      userId: "1",
-      applicant: {
-        fullName: "John Doe",
-        email: "john@example.com",
-        phoneNumber: "123-456-7890",
-        cv: "/path/to/john_cv.pdf",
-      },
-    },
-    {
-      userId: "2",
-      applicant: {
-        fullName: "Jane Smith",
-        email: "jane@example.com",
-        phoneNumber: "987-654-3210",
-        cv: "/path/to/jane_cv.pdf",
-      },
-    },
-  ];
-  const getUsers = async () => {
-    // try {
-    //   const accessToken = localStorage.getItem("token");
-    //   const headers = {
-    //     Authorization: `${accessToken}`,
-    //   };
-    //   const response = await axios.get("/users", { headers });
-    //   if (response.status === 200) {
-    //     const userIds = response.data.data;
-        setUsers(demoApplicants);
-    //   } else {
-    //     console.error(response.data.message);
-    //   }
-    // } catch (e) {
-    //   console.error(e);
-    // }
-  };
-  useEffect(() => {
-    getUsers();
-  }, []);
+
   return (
     <div>
       {users.map((user) => (

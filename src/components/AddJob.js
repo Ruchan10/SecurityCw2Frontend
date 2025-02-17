@@ -95,7 +95,7 @@ export default function AddJob() {
   };
   useEffect(() => {
     getCreatedJobs();
-  }, []);
+  }, [getCreatedJobs]);
   return (
     <div>
       <Navbar />
