@@ -19,15 +19,6 @@ export default function AddJob() {
   const navigate = useNavigate();
 
   const handleAddJob = async () => {
-    const accessToken = localStorage.getItem("token") ?? "default";
-    console.log("TOKEN");
-    console.log(accessToken);
-    // if (!accessToken) {
-    //   // If the access token is not available, handle the authentication error
-    //   console.error("User not authenticated.");
-    //   return;
-    // }
-
     if (!name || !title || !desc || !salary) {
       message.error("Fields cannot be left empty");
       return;
@@ -44,10 +35,6 @@ export default function AddJob() {
     formData.append("jobTime", jobTime);
     formData.append("location", location);
     formData.append("logo", logo);
-    const headers = {
-      Authorization: `${accessToken}`,
-      "Content-Type": "multipart/form-data",
-    };
     navigate(-1);
     message.success("Job Added Successfully");
     // try {
@@ -69,7 +56,6 @@ export default function AddJob() {
 
   const getCreatedJobs = async () => {
     try {
-      const accessToken = localStorage.getItem("token"); 
     //   const userId = jwtDecode(accessToken).userId;
     //   if (!accessToken) {
     //     // If the access token is not available, handle the authentication error
@@ -77,10 +63,7 @@ export default function AddJob() {
     //     return;
     //   }
 
-      // Set the Authorization header with the access token
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
+  
 
     //   const response = await axios.get(`/jobs/user/${userId}`, { headers });
     //   setLogoUrl(response.data.data[0].logo);
@@ -95,7 +78,7 @@ export default function AddJob() {
   };
   useEffect(() => {
     getCreatedJobs();
-  }, [getCreatedJobs]);
+  }, );
   return (
     <div>
       <Navbar />
@@ -171,10 +154,10 @@ export default function AddJob() {
               class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a onClick={() => handleJobTime("Part Time")}>Part Time</a>
+                <button onClick={() => handleJobTime("Part Time")}>Part Time</button>
               </li>
               <li>
-                <a onClick={() => handleJobTime("Full Time")}>Full Time</a>
+                <button onClick={() => handleJobTime("Full Time")}>Full Time</button>
               </li>
             </ul>
           </div>

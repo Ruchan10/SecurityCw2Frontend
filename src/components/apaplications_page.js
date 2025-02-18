@@ -153,45 +153,10 @@ const ApplicationPage = () => {
   const fetchJobs = async () => {
     setAppliedJobs(demoJobs);
     setCreatedJobs(applicantsJobs);
-    // console.log("fetchJobs");
-    // try {
-    //   const response = await axios.get("/jobs");
-
-    //   if (response.data.success) {
-    //     setJobs(response.data.data);
-    //   } else {
-    //     console.error(response.data.message);
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
   };
   const getAppliedJobs = async () => {
-    // try {
-    //   // Get the access token from your authentication system
-    //   const accessToken = localStorage.getItem("token");
-    // //   if (!accessToken) {
-    // //     console.error("User not authenticated.");
-    // //     return;
-    // //   }
-
-    //   // Set the Authorization header with the access token
-    //   const headers = {
-    //     Authorization: `${accessToken}`,
-    //   };
-
-    //   const response = await axios.get("/jobs/getAppliedJobs", { headers });
-    //   if (response.data.success) {
-    //     setAppliedJobs(response.data.data);
-    //   } else {
-    //     console.error(response.data.message);
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
   };
 
-  // Function to handle the delete job application action
 
   const getCreatedJobs = async () => {
     try {
@@ -223,12 +188,12 @@ const ApplicationPage = () => {
   useEffect(() => {
     getAppliedJobs();
     fetchJobs();
-  }, [fetchJobs, getAppliedJobs]);
+  }, );
   return (
     <div>
       <Navbar />
       <div class="tabs">
-        <a
+        <button
           className={`tab tab-lifted ${
             activeTab === "applied" ? "tab-active" : ""
           }`}
@@ -236,8 +201,8 @@ const ApplicationPage = () => {
           tabIndex="0"
         >
           Applied
-        </a>
-        <a
+        </button>
+        <button
           className={`tab tab-lifted ${
             activeTab === "received" ? "tab-active" : ""
           }`}
@@ -245,7 +210,7 @@ const ApplicationPage = () => {
           tabIndex="1"
         >
           Received
-        </a>
+        </button>
       </div>
       {activeTab === "applied" && (
         <GetAppliedJobs
