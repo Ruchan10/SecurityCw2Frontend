@@ -1,8 +1,6 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
-import { message } from "antd";
-import axios from "axios";
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { BsBookmark } from "react-icons/bs";
 import { IoBriefcaseOutline, IoDocumentsOutline } from "react-icons/io5";
@@ -34,8 +32,6 @@ const Navbar = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const [filterQuery, setFilterQuery] = useState("");
-  const [jobs, setJobs] = useState([]);
   const [notis, setNotis] = useState(demoNotifications);
 
   const handleButtonClick = (path) => {
@@ -46,32 +42,13 @@ const Navbar = ({ onSearch }) => {
     return activeButton === path;
   };
   const getSearched = async () => {
-    try {
-      const response = await axios.post(`/search/mainSearch/${searchQuery}`);
-      if (response.status === 200) {
-        setJobs(response.data.data);
-        onSearch(response.data.data);
-      } else {
-        message.error(response.data.message);
-      }
-    } catch (e) {
-      console.error(e);
-    }
+
   };
 
   const getUserProfile = async () => {
     try {
-      const accessToken = localStorage.getItem("token");
-    //   const userId = jwtDecode(accessToken).userId;
-
-    //   if (!accessToken) {
-    //     // If the access token is not available, handle the authentication error
-    //     console.error("User not authenticated.");
-    //     return;
-    //   }
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
+      setEmail("");
+      setNotis(demoNotifications);
     //   const response = await axios.get(`/users/profile/${userId}`, {
     //     headers,
     //   });
@@ -89,15 +66,7 @@ const Navbar = ({ onSearch }) => {
   };
   const getNotifications = async () => {
     try {
-      const accessToken = localStorage.getItem("token") ?? "default";
-    //   if (!accessToken) {
-    //     // If the access token is not available, handle the authentication error
-    //     console.error("User not authenticated.");
-    //     return;
-    //   }
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
+getUserProfile();
     //   const response = await axios.get("/users/getNoti", {
     //     headers,
     //   });
@@ -112,16 +81,13 @@ const Navbar = ({ onSearch }) => {
   };
   const clearNotifications = async () => {
     try {
-      const accessToken = localStorage.getItem("token");
 
     //   if (!accessToken) {
     //     // If the access token is not available, handle the authentication error
     //     console.error("User not authenticated.");
     //     return;
     //   }
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
+
     //   const response = await axios.post("/users/clearNoti", null, {
     //     headers,
     //   });
@@ -137,15 +103,12 @@ const Navbar = ({ onSearch }) => {
   };
   const deleteAccount = async () => {
     try {
-      const accessToken = localStorage.getItem("token");
     //   if (!accessToken) {
     //     // If the access token is not available, handle the authentication error
     //     console.error("User not authenticated.");
     //     return;
     //   }
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
+
     //   const response = await axios.post(
     //     `/users/profile/`,
     //     { password },
@@ -174,19 +137,11 @@ const Navbar = ({ onSearch }) => {
 
   const changePassword = async () => {
     try {
-      const accessToken = localStorage.getItem("token");
     //   if (!accessToken) {
     //     message.error("User not authenticated.");
     //     return;
     //   }
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
-      const pws = {
-        currentPassword: password,
-        newPassword: newPassword,
-        reenterNewPassword: confirmPassword,
-      };
+
     //   const response = await axios.post("/auth/changePassword", pws, {
     //     headers,
     //   });
@@ -203,18 +158,11 @@ const Navbar = ({ onSearch }) => {
   };
   const changeEmail = async () => {
     try {
-      const accessToken = localStorage.getItem("token");
     //   if (!accessToken) {
     //     message.error("User not authenticated.");
     //     return;
     //   }
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
-      const emails = {
-        email: newEmail,
-        confirmEmail: confirmEmail,
-      };
+
     //   const response = await axios.post("/users/changeEmail", emails, {
     //     headers,
     //   });
@@ -234,13 +182,13 @@ const Navbar = ({ onSearch }) => {
     if (notis.length === 0) {
       return (
         <li>
-          <a href="#">Empty</a>
+          <a href="/about">Empty</a>
         </li>
       );
     } else {
       return notis.map((notification, index) => (
         <li key={index}>
-          <a href="#">{notification}</a>
+          <a href="/noti">{notification}</a>
         </li>
       ));
     }
@@ -249,10 +197,7 @@ const Navbar = ({ onSearch }) => {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-  useEffect(() => {
-    getUserProfile();
-    getNotifications();
-  }, [getUserProfile]);
+
   return (
     <div>
       <div className={`navbar bg-neutral ${menuOpen ? "menu-open" : ""}`}>
@@ -377,7 +322,7 @@ const Navbar = ({ onSearch }) => {
               {renderNotifications()}
               {notis.length > 0 && (
                 <li>
-                  <a onClick={clearNotifications}>Clear All</a>
+                  <button onClick={clearNotifications}>Clear All</button>
                 </li>
               )}
             </ul>
@@ -393,39 +338,39 @@ const Navbar = ({ onSearch }) => {
               class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
             >
               <li>
-                <a tabIndex="0" onClick={() => navigate("/editProfile")}>
+                <button tabIndex="0" onClick={() => navigate("/editProfile")}>
                   Profile
-                </a>
+                </button>
               </li>
               <li>
-                <a tabIndex="0" onClick={() => window.my_modal_3.showModal()}>
+                <button tabIndex="0" onClick={() => window.my_modal_3.showModal()}>
                   Change Password
-                </a>
+                </button>
               </li>
               <li>
                 {isAdmin() && (
-                  <a
+                  <button
                     tabIndex="0"
                     onClick={() => window.userListModal.showModal()}
                   >
                     View Users
-                  </a>
+                  </button>
                 )}
                 {!isAdmin() && (
-                  <a tabIndex="0" onClick={() => window.my_modal_1.showModal()}>
+                  <button tabIndex="0" onClick={() => window.my_modal_1.showModal()}>
                     Change Email
-                  </a>
+                  </button>
                 )}
               </li>
               <li>
-                <a tabIndex="1" onClick={() => window.my_modal_5.showModal()}>
+                <button tabIndex="1" onClick={() => window.my_modal_5.showModal()}>
                   Delete Account
-                </a>
+                </button>
               </li>
               <li>
-                <a tabIndex="1" onClick={() => window.my_modal.showModal()}>
+                <button tabIndex="1" onClick={() => window.my_modal.showModal()}>
                   Logout
-                </a>
+                </button>
               </li>
             </ul>
           </div>

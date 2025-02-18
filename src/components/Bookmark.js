@@ -112,6 +112,7 @@ export default function BookmarkPage() {
       ];
   const [bookmarks, setBookmarks] = useState(demoJobs);
   const getBookmarks = async () => {
+    setBookmarks(demoJobs);
     // try {
     //   const accessToken = localStorage.getItem("token"); 
     // //   if (!accessToken) {
@@ -137,7 +138,7 @@ export default function BookmarkPage() {
 
   useEffect(() => {
     getBookmarks();
-  }, [getBookmarks]);
+  }, );
 
   return (
     <div>

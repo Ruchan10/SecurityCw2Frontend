@@ -5,7 +5,6 @@ import { BsFacebook, BsReddit, BsTwitter, BsYoutube } from "react-icons/bs";
 import logo from "../public/images/jobFinderLogo.png";
 
 import "../styles/Footer.css";
-// import "../styles/home_page.css";
 import "../tailwind.css";
 
 export default function Footer() {
@@ -16,7 +15,6 @@ export default function Footer() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // If scrolling down
       if (currentScrollY > lastScrollY) {
         footer.classList.add("hide");
       } else {

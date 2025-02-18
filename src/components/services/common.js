@@ -28,7 +28,6 @@ export function getIcons() {
 
 export function GetUserPill({
   jobId,
-  userId,
   title,
   applicants,
 }) {

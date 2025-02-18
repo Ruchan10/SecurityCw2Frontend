@@ -39,6 +39,7 @@ const LoginPage = () => {
     try {
         if (!email || !password ) {
             message.error("Fields cannot be left empty");
+            return;
           }
 
     //   const user = {

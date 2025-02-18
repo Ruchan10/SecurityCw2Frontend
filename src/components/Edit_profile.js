@@ -1,6 +1,5 @@
 import { message } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../styles/edit_profile.css";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
@@ -22,20 +21,9 @@ export default function EditProfile() {
     cv: "demo_cv.pdf", 
   };
   
-  const navigate = useNavigate();
   const getUserProfile = async () => {
     try {
-      const accessToken = localStorage.getItem("token"); // You might need to adjust this based on how you store the access token
-    //   const userId = jwtDecode(accessToken).userId;
-
-    //   if (!accessToken) {
-    //     // If the access token is not available, handle the authentication error
-    //     console.error("User not authenticated.");
-    //     return;
-    //   }
-      const headers = {
-        Authorization: `${accessToken}`,
-      };
+      email("johndoe@example.com");
     //   const response = await axios.get(`/users/profile/${userId}`, {
     //     headers,
     //   });
@@ -54,13 +42,6 @@ export default function EditProfile() {
     }
   };
   const handleEditProfile = async () => {
-    const accessToken = localStorage.getItem("token");
-    // if (!accessToken) {
-    //   // If the access token is not available, handle the authentication error
-    //   console.error("User not authenticated.");
-    //   return;
-    // }
-
     if (!fullName || !num) {
       message.error("Fields cannot be left empty");
       return;
@@ -93,7 +74,6 @@ export default function EditProfile() {
   };
 
   const handleAvatarClick = () => {
-    // Trigger the click event on the file input
     fileInputRef.current.click();
   };
   const handleImageChange = (e) => {
@@ -102,7 +82,6 @@ export default function EditProfile() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        // Set the avatarImage state with the selected file data
         setAvatarImage(reader.result);
       };
       reader.readAsDataURL(file);
@@ -114,7 +93,7 @@ export default function EditProfile() {
   };
   useEffect(() => {
     getUserProfile();
-  }, [getUserProfile]);
+  }, );
   return (
     <div>
       <Navbar />

@@ -231,6 +231,10 @@ const HomePage = () => {
     //   console.error(error);
     // }
   };
+
+  useEffect(() => {
+    fetchJobs();
+  });
   const getFilters = async () => {
     try {
       const formData = new FormData();
@@ -251,9 +255,6 @@ const HomePage = () => {
   };
   //   fetchJobs();
 
-  useEffect(() => {
-    fetchJobs();
-  }, [fetchJobs]);
   const handleSearch = (searchResults) => {
     setJobs(searchResults);
   };
